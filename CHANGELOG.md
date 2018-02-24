@@ -1,6 +1,13 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## [1.1.3]
+### Fixed
+- No longer builds in debug mode by default.
+
+### Changed
+- Internal changes.
+
 ## [1.1.2]
 ### Fixed
 - Fixed errors parsing command line arguments crashing all terminals
