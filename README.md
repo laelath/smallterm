@@ -58,7 +58,13 @@ following options:
 	color0e=#93a1a1
 	color0f=#3d36e3
 
-### Vim
+## Miscellaneous
+### Weird Colors in Vim
 For unknown reasons, vim does not color every line correctly. To fix this, add
 `set t_ut=` in your .vimrc. In addition to that, add `set termguicolors` to your
-.vimrc to add TrueColor support.
+`.vimrc` to add TrueColor support.
+
+### Contributing
+## Formatting
+This project is formatted using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Please
+run this command on your code before committing.
