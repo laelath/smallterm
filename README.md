@@ -27,6 +27,7 @@ permission.
 You can run Miniterm with the `miniterm` command.
 
 ## Configuration
+### Colors and Font
 Miniterm is configure with an ini-like file located in
 XDG\_CONFIG\_HOME/miniterm/miniterm.conf. Currently, there are two sections.
 
@@ -57,6 +58,9 @@ following options:
 	color0d=#6c71c4
 	color0e=#93a1a1
 	color0f=#3d36e3
+
+### Scrollbar
+For a scrollbar, set the `use-scrollbar` setting in the `[Misc]` section to `true`.
 
 ### Vim
 For unknown reasons, vim does not color every line correctly. To fix this, add
