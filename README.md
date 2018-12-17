@@ -62,7 +62,13 @@ following options:
 ### Scrollbar
 For a scrollbar, set the `use-scrollbar` setting in the `[Misc]` section to `true`.
 
-### Vim
-For unknown reasons, vim does not color every line correctly. To fix this, add
-`set t_ut=` in your .vimrc. In addition to that, add `set termguicolors` to your
-.vimrc to add TrueColor support.
+## Miscellaneous
+### Weird Colors in Vim
+For unknown reasons, Vim does not color every line correctly. To fix this, add
+`set t_ut=` in your `.vimrc`. In addition to that, add `set termguicolors` to your
+`.vimrc` to add TrueColor support.
+
+### Contributing
+## Formatting
+This project is formatted using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Please
+run this command on your code before committing.
