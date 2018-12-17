@@ -46,10 +46,11 @@ static void increase_font_size(VteTerminal *vte);
 static void decrease_font_size(VteTerminal *vte);
 static void reset_font_size(VteTerminal *vte);
 static gboolean key_press_cb(VteTerminal *vte, GdkEventKey *event);
-static void vte_config(VteTerminal *vte);
+static GtkWidget *vte_config(VteTerminal *vte);
 static gboolean vte_spawn(VteTerminal *vte,
 	GApplicationCommandLine *command_line, char *working_directory,
 	char *command, char **environment);
+static GtkWidget *make_scrolled_window(GtkScrollable *widget);
 static void read_config_file(VteTerminal *vte, GKeyFile *config_file);
 static void window_close(GtkWindow *window, gint status, gpointer user_data);
 static void vte_exit_cb(VteTerminal *vte, gint status, gpointer user_data);
@@ -244,7 +245,29 @@ read_config_file(VteTerminal *vte, GKeyFile *config_file)
 	set_colors_from_key_file(vte, config_file);
 }
 
-static void
+/* Returns a GtkScrolledWindow containing widget. */
+static GtkWidget *
+make_scrolled_window(GtkScrollable *widget)
+{
+	GtkAdjustment *hadjustment =
+		gtk_scrollable_get_hadjustment(GTK_SCROLLABLE(widget));
+	GtkAdjustment *vadjustment =
+		gtk_scrollable_get_vadjustment(GTK_SCROLLABLE(widget));
+	GtkWidget *scrolled_window =
+		gtk_scrolled_window_new(hadjustment, vadjustment);
+	gtk_scrolled_window_set_overlay_scrolling(
+		GTK_SCROLLED_WINDOW(scrolled_window), FALSE);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
+		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(widget));
+	return scrolled_window;
+}
+
+/*
+ * Reads from the configuration file updates vte with those settings. Returns
+ * the widget that should be displayed to the user.
+ */
+static GtkWidget *
 vte_config(VteTerminal *vte)
 {
 	vte_terminal_set_audible_bell(vte, AUDIBLE_BELL);
@@ -256,9 +279,17 @@ vte_config(VteTerminal *vte)
 		g_strconcat(g_get_user_config_dir(), "/miniterm", NULL);
 	char *config_path = g_strconcat(config_dir, "/miniterm.conf", NULL);
 	GKeyFile *config_file = g_key_file_new();
-	if (g_key_file_load_from_file(config_file, config_path, 0, NULL))
+	GtkWidget *widget = GTK_WIDGET(vte);
+	if (g_key_file_load_from_file(config_file, config_path, 0, NULL)) {
 		read_config_file(vte, config_file);
-	else {
+		GError *err = NULL;
+		gboolean use_scrollbar = g_key_file_get_boolean(
+			config_file, "Misc", "use-scrollbar", &err);
+		if (err != NULL)
+			g_error_free(err);
+		else if (use_scrollbar)
+			widget = make_scrolled_window(GTK_SCROLLABLE(vte));
+	} else {
 		mkdir(config_dir, 0777);
 		FILE *file = fopen(config_path, "w");
 		if (file) {
@@ -268,13 +299,16 @@ vte_config(VteTerminal *vte)
 				"#color00=\n#color01=\n#color02=\n#color03=\n"
 				"#color04=\n#color05=\n#color06=\n#color07=\n"
 				"#color08=\n#color09=\n#color0a=\n#color0b=\n"
-				"#color0c=\n#color0d=\n#color0e=\n#color0f=\n");
+				"#color0c=\n#color0d=\n#color0e=\n#color0f=\n\n"
+				"[Misc]\n"
+				"use-scrollbar=false\n");
 			fclose(file);
 		}
 	}
 	g_free(config_dir);
 	g_free(config_path);
 	g_key_file_free(config_file);
+	return widget;
 }
 
 static gboolean
@@ -493,15 +527,14 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	/* Create vte terminal widget */
 	GtkWidget *vte_widget =
 		create_vte_terminal(GTK_WINDOW(window), keep, title);
-	gtk_box_pack_start(GTK_BOX(box), vte_widget, TRUE, TRUE, 0);
 	VteTerminal *vte = VTE_TERMINAL(vte_widget);
 	/* Apply geometry hints to handle terminal resizing */
 	set_geometry_hints(vte, &geo_hints);
 	gtk_window_set_geometry_hints(GTK_WINDOW(window), vte_widget,
 		&geo_hints,
 		GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
-
-	vte_config(vte);
+	GtkWidget *widget = vte_config(vte);
+	gtk_box_pack_start(GTK_BOX(box), widget, TRUE, TRUE, 0);
 	if (!vte_spawn(vte, command_line, directory, command, NULL)) {
 		gtk_window_close(GTK_WINDOW(window));
 		g_free(command);
