@@ -60,7 +60,7 @@ following options:
 	color0f=#3d36e3
 
 ### Scrollbar
-If you desire a scrollbar, compile with `USE_SCROLLBAR` set to `TRUE` in `config.h`.
+For a scrollbar, set the `use-scrollbar` setting in the `[Misc]` section to `true`.
 
 ### Vim
 For unknown reasons, vim does not color every line correctly. To fix this, add
