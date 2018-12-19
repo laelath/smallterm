@@ -28,13 +28,16 @@
 #include <stdbool.h>
 
 #define MINITERM_COLOR_COUNT 16
+#define MINITERM_DEFAULT_SCROLLBACK_LINES 10000
 
 typedef struct _MinitermSettings MinitermSettings;
 
 struct _MinitermSettings {
 	bool dynamic_window_title;
 	bool urgent_on_bell;
+	bool audible_bell;
 	bool use_scrollbar;
+	int scrollback_lines;
 	/* NULL indicates no user defined font. */
 	char *font_name;
 
@@ -45,7 +48,12 @@ struct _MinitermSettings {
 	GdkRGBA color_palette[MINITERM_COLOR_COUNT];
 };
 
-bool miniterm_settings_init(MinitermSettings *settings, GKeyFile *config_file);
+void miniterm_settings_init(MinitermSettings *settings);
+bool miniterm_settings_set_from_key_file(
+	MinitermSettings *settings, GKeyFile *config_file);
 void miniterm_settings_destroy(MinitermSettings *settings);
+
+/* Assumes the directory path resides in exists. */
+void miniterm_write_default_settings(const char *config_path);
 
 #endif /* MINITERM_SETTINGS_H */

@@ -31,13 +31,6 @@
 /* Terminal emulation (value of $TERM) (default: xterm) */
 #define TERMINFO "xterm-256color"
 
-#define DYNAMIC_WINDOW_TITLE // uncomment to enable window_title_cb
-#define URGENT_ON_BELL       // uncomment to enable window_urgency_hint_cb
-#define SCROLLBACK_LINES 10000
-#define SEARCH_WRAP_AROUND TRUE
-#define AUDIBLE_BELL FALSE
-#define VISIBLE_BELL FALSE
-
 /* One of VTE_CURSOR_SHAPE_BLOCK, VTE_CURSOR_SHAPE_IBEAM,
  * VTE_CURSOR_SHAPE_UNDERLINE */
 #define CURSOR_SHAPE VTE_CURSOR_SHAPE_BLOCK
@@ -47,11 +40,3 @@
 
 /* Selection behavior for double-clicks */
 #define WORD_CHARS "-A-Za-z0-9:./?%&#_=+@~"
-
-/* Regular expression matching urls */
-#define SPECIAL_CHARS "[[:alnum:]\\Q+-_,?;.:/!%$^*&~#=()\\E]"
-#define SCHEME "(?:[[:alpha:]][+-.[:alpha:]]*://)"
-#define USERINFO "(?:[[:alnum:]]+(?:" SPECIAL_CHARS "+)?\\@)?"
-#define HOST "(?:(?:[[:alnum:]-]+\\.)*[[:alpha:]]{2,})"
-#define PORT "(?:\\:[[:digit:]]{1,5})?"
-#define URLPATH "(?:/" SPECIAL_CHARS "*)?"
