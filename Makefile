@@ -19,14 +19,17 @@ LDLIBS := $(base_LIBS) $(pkgs_LIBS)
 
 all: miniterm
 
-miniterm: miniterm.c config.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDLIBS) miniterm.c -o miniterm
+miniterm: miniterm.o settings.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDLIBS) miniterm.o settings.o
 
-debug: miniterm.c config.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -g $(LDLIBS) miniterm.c -o miniterm
+miniterm.o: miniterm.c config.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $(LDLIBS) miniterm.c -o miniterm.o
+
+settings.o: settings.h settings.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $(LDLIBS) settings.c -o settings.o
 
 clean:
-	$(RM) miniterm
+	$(RM) miniterm miniterm.o settings.o
 
 install: miniterm
 	install -Dm755 miniterm $(DESTDIR)/usr/bin/miniterm

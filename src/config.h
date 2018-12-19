@@ -26,6 +26,8 @@
  *
  */
 
+#define MINITERM_VERSION "1.1.3"
+
 /* Terminal emulation (value of $TERM) (default: xterm) */
 #define TERMINFO "xterm-256color"
 
@@ -53,5 +55,3 @@
 #define HOST "(?:(?:[[:alnum:]-]+\\.)*[[:alpha:]]{2,})"
 #define PORT "(?:\\:[[:digit:]]{1,5})?"
 #define URLPATH "(?:/" SPECIAL_CHARS "*)?"
-
-const char *const url_regex = SCHEME USERINFO HOST PORT URLPATH "(?<!\\.)";
