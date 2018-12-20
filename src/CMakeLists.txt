@@ -1,6 +1,6 @@
 find_package (PkgConfig)
 
-set (SOURCES miniterm.c settings.c)
+set (SOURCES miniterm.c settings.c terminal.c)
 add_executable (miniterm ${SOURCES})
 
 pkg_check_modules (MINITERM_LIBS REQUIRED vte-2.91 glib-2.0)

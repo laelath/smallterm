@@ -9,6 +9,7 @@ This project adheres to Semantic Versioning
 - Move project to CMake.
 
 ### Fixed
+- Fixed licenses.
 - Make icon show a terminal rather than generic picture.
 
 ## [1.2.0] 2018-12-16
