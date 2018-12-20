@@ -4,13 +4,14 @@ This project adheres to Semantic Versioning
 ### Unreleased
 ### Added
 - Add options to config file previously available as compile options.
+- Add ability to reload config file on the fly. Press CTRL+Shift+R.
 
 ### Changed
 - Move project to CMake.
+- Make icon show a terminal rather than generic picture.
 
 ### Fixed
 - Fixed licenses.
-- Make icon show a terminal rather than generic picture.
 
 ## [1.2.0] 2018-12-16
 # Added

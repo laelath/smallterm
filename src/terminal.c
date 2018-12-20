@@ -194,7 +194,7 @@ update_from_settings(MinitermTerminal *terminal, MinitermSettings *settings)
 		gtk_container_remove(
 			GTK_CONTAINER(priv->box), priv->scrolled_window);
 		g_clear_object(&priv->scrolled_window);
-	} else
+	} else if (gtk_widget_get_parent(GTK_WIDGET(terminal)) != NULL)
 		gtk_container_remove(
 			GTK_CONTAINER(priv->box), GTK_WIDGET(terminal));
 	if (settings->use_scrollbar)
@@ -219,8 +219,8 @@ miniterm_terminal_load_settings(MinitermTerminal *terminal)
 		mkdir(config_dir, 0777);
 		miniterm_write_default_settings(config_path);
 	}
-	update_from_settings(terminal, &settings);
 	miniterm_settings_set_from_key_file(&settings, config_file);
+	update_from_settings(terminal, &settings);
 	g_free(config_dir);
 	g_free(config_path);
 	g_key_file_free(config_file);
@@ -273,6 +273,9 @@ key_press_cb(MinitermTerminal *terminal, GdkEventKey *event)
 			return TRUE;
 		case GDK_KEY_plus:
 			increase_font_size(terminal);
+			return TRUE;
+		case GDK_KEY_r:
+			miniterm_terminal_load_settings(terminal);
 			return TRUE;
 		}
 	} else if (modifiers == GDK_CONTROL_MASK) {
@@ -368,6 +371,8 @@ add_with_scrollbar(MinitermTerminal *terminal)
 	g_object_ref(priv->scrolled_window);
 	gtk_box_pack_start(
 		GTK_BOX(priv->box), priv->scrolled_window, TRUE, TRUE, 0);
+	/* Show in case this widget is created after start of program. */
+	gtk_widget_show(priv->scrolled_window);
 }
 
 void
