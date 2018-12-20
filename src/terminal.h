@@ -33,20 +33,17 @@
 G_DECLARE_FINAL_TYPE(
 	MinitermTerminal, miniterm_terminal, MINITERM, TERMINAL, VteTerminal)
 
-/* The title may be NULL. */
+/*
+ * The title may be NULL. Don't manually add the result of this function to the
+ * window. This class will take care of it. To finish initialization, call
+ * miniterm_terminal_load_settings.
+ */
 MinitermTerminal *miniterm_terminal_new(
 	bool keep, const char *title, GtkWindow *window);
-/* Loads from default path. Returns whether it succeeded. */
+/*
+ * Loads from default path. Returns whether it succeeded. Currently, nothing
+ * would cause it to return false.
+ */
 bool miniterm_terminal_load_settings(MinitermTerminal *terminal);
-/*
- * Assumes terminal's window contains no widgets. Adds terminal to its own
- * window with a scrollbar.
- */
-void miniterm_terminal_add_with_scrollbar(MinitermTerminal *terminal);
-/*
- * Assumes terminal's window contains no widgets. Adds terminal to its own
- * window without a scrollbar.
- */
-void miniterm_terminal_add_without_scrollbar(MinitermTerminal *terminal);
 
 #endif /* MINITERM_TERMINAL_H */

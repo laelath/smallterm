@@ -17,6 +17,13 @@ struct _MinitermTerminalPrivate {
 
 	/* Window for connecting signals. */
 	GtkWindow *window;
+	/*
+	 * Box to add self to. This is so that we can dynamically add and
+	 * remove the scrollbar. Should always be directly inside window.
+	 */
+	GtkWidget *box;
+	/* Scrolled window, NULL indicates currently not in use. */
+	GtkWidget *scrolled_window;
 
 	/* Signal handlers. 0 indicates no signal connected. */
 	unsigned long bell_handler;
@@ -26,16 +33,28 @@ struct _MinitermTerminalPrivate {
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-	MinitermTerminal, miniterm_terminal, MINITERM_TYPE_TERMINAL)
+	MinitermTerminal, miniterm_terminal, VTE_TYPE_TERMINAL)
 
 static void miniterm_terminal_finalize(GObject *terminal);
 static void miniterm_terminal_dispose(GObject *terminal);
 
+/*
+ * Sets the terminal's settings from the given settings. Ensures that all
+ * widgets are correctly added to each other.
+ */
 static void update_from_settings(
 	MinitermTerminal *terminal, MinitermSettings *settings);
+/*
+ * Adds terminal to its own window with a scrollbar. Assumes that terminal's
+ * scrolled window is currently NULL and that its box contains no elements.
+ */
+static void add_with_scrollbar(MinitermTerminal *terminal);
+/*
+ * Adds terminal to its own window without a scrollbar. Assumes the terminal's
+ * box contains no elements.
+ */
+static void add_without_scrollbar(MinitermTerminal *terminal);
 
-/* Callback that removes widget from the container in data. */
-static void remove_widget_callback(GtkWidget *widget, gpointer data);
 /* Returns a GtkScrolledWindow containing widget. */
 static GtkWidget *make_scrolled_window(GtkScrollable *widget);
 /* Callback to set window urgency hint on beep events. */
@@ -79,7 +98,10 @@ miniterm_terminal_init(MinitermTerminal *terminal)
 		VTE_TERMINAL(terminal), WORD_CHARS);
 	g_signal_connect(
 		terminal, "key-press-event", G_CALLBACK(key_press_cb), NULL);
-	g_print("Ran init.\n");
+
+	priv->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	g_object_ref(priv->box);
+	priv->scrolled_window = NULL;
 }
 
 static void
@@ -96,6 +118,8 @@ miniterm_terminal_dispose(GObject *terminal)
 	MinitermTerminalPrivate *priv = miniterm_terminal_get_instance_private(
 		MINITERM_TERMINAL(terminal));
 	g_clear_object(&priv->window);
+	g_clear_object(&priv->box);
+	g_clear_object(&priv->scrolled_window);
 	G_OBJECT_CLASS(miniterm_terminal_parent_class)->dispose(terminal);
 }
 
@@ -117,10 +141,10 @@ miniterm_terminal_new(bool keep, const char *title, GtkWindow *window)
 	priv->cmd_title = g_strdup(title);
 	priv->window = window;
 	g_object_ref(window);
+	gtk_container_add(GTK_CONTAINER(priv->window), priv->box);
 	if (!keep)
 		g_signal_connect(
 			terminal, "child-exited", G_CALLBACK(exit_cb), window);
-	g_print("Ran new.\n");
 	return terminal;
 }
 
@@ -164,12 +188,19 @@ update_from_settings(MinitermTerminal *terminal, MinitermSettings *settings)
 	 * doesn't cause it to get destroyed.
 	 */
 	g_object_ref(terminal);
-	gtk_container_foreach(GTK_CONTAINER(priv->window),
-		remove_widget_callback, priv->window);
+	if (priv->scrolled_window != NULL) {
+		gtk_container_remove(GTK_CONTAINER(priv->scrolled_window),
+			GTK_WIDGET(terminal));
+		gtk_container_remove(
+			GTK_CONTAINER(priv->box), priv->scrolled_window);
+		g_clear_object(&priv->scrolled_window);
+	} else
+		gtk_container_remove(
+			GTK_CONTAINER(priv->box), GTK_WIDGET(terminal));
 	if (settings->use_scrollbar)
-		miniterm_terminal_add_with_scrollbar(terminal);
+		add_with_scrollbar(terminal);
 	else
-		miniterm_terminal_add_without_scrollbar(terminal);
+		add_without_scrollbar(terminal);
 	g_object_unref(terminal);
 }
 
@@ -194,12 +225,6 @@ miniterm_terminal_load_settings(MinitermTerminal *terminal)
 	g_free(config_path);
 	g_key_file_free(config_file);
 	return true;
-}
-
-static void
-remove_widget_callback(GtkWidget *widget, gpointer data)
-{
-	gtk_container_remove(GTK_CONTAINER(data), widget);
 }
 
 static void
@@ -335,24 +360,23 @@ clear_signal_handlers(MinitermTerminal *terminal)
 }
 
 void
-miniterm_terminal_add_with_scrollbar(MinitermTerminal *terminal)
+add_with_scrollbar(MinitermTerminal *terminal)
 {
 	MinitermTerminalPrivate *priv =
 		miniterm_terminal_get_instance_private(terminal);
-	GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-	gtk_container_add(GTK_CONTAINER(priv->window), box);
-	GtkWidget *widget = make_scrolled_window(GTK_SCROLLABLE(terminal));
-	gtk_box_pack_start(GTK_BOX(box), widget, TRUE, TRUE, 0);
+	priv->scrolled_window = make_scrolled_window(GTK_SCROLLABLE(terminal));
+	g_object_ref(priv->scrolled_window);
+	gtk_box_pack_start(
+		GTK_BOX(priv->box), priv->scrolled_window, TRUE, TRUE, 0);
 }
 
 void
-miniterm_terminal_add_without_scrollbar(MinitermTerminal *terminal)
+add_without_scrollbar(MinitermTerminal *terminal)
 {
 	MinitermTerminalPrivate *priv =
 		miniterm_terminal_get_instance_private(terminal);
-	GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-	gtk_container_add(GTK_CONTAINER(priv->window), box);
-	gtk_box_pack_start(GTK_BOX(box), GTK_WIDGET(terminal), TRUE, TRUE, 0);
+	gtk_box_pack_start(
+		GTK_BOX(priv->box), GTK_WIDGET(terminal), TRUE, TRUE, 0);
 }
 
 static GtkWidget *
