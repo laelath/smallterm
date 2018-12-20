@@ -1,14 +1,31 @@
 # Change Log
 This project adheres to Semantic Versioning
 
-## [1.1.3]
+### Unreleased
+### Added
+- Add options to config file previously available as compile options.
+
+### Changed
+- Move project to CMake.
+
+### Fixed
+- Make icon show a terminal rather than generic picture.
+
+## [1.2.0] 2018-12-16
+# Added
+- Add a scroll bar.
+
+### Fixed
+- Fix README
+
+## [1.1.3] - 2018-02-24
 ### Fixed
 - No longer builds in debug mode by default.
 
 ### Changed
 - Internal changes.
 
-## [1.1.2]
+## [1.1.2] - 2018-01-29
 ### Fixed
 - Fixed errors parsing command line arguments crashing all terminals
 - Fixed opening help and version closing all terminals
