@@ -19,9 +19,24 @@ Miniterm requires the following dependencies:
 - gtk3
 - vte3 (2.91+)
 
-### Compilation
-To install, simply run `make` and `make install` which may require root
-permission.
+### Building
+Building Miniterm requires CMake and a Make program such as GNU Make. First create a build
+directory:
+```bash
+mkdir build
+cd build
+```
+
+Run CMake with the desired options. For a release build run:
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release ..
+```
+
+Finally, build and install the program. This may require root permission.
+```bash
+make
+sudo make install
+```
 
 ## Usage
 You can run Miniterm with the `miniterm` command.
@@ -62,11 +77,14 @@ following options:
 ### Scrollbar
 For a scrollbar, set the `use-scrollbar` setting in the `[Misc]` section to `true`.
 
+### Other
+If the configuration file doesn't exist, Miniterm will create one automatically. See the generated
+XDG\_CONFIG\_HOME/miniterm/miniterm.conf for all available options.
+
 ## Miscellaneous
 ### Weird Colors in Vim
-For unknown reasons, Vim does not color every line correctly. To fix this, add
-`set t_ut=` in your `.vimrc`. In addition to that, add `set termguicolors` to your
-`.vimrc` to add TrueColor support.
+Sometimes Vim doesn't color every line correctly. To fix this, add `set t_ut=` in your `.vimrc`. In
+addition to that, add `set termguicolors` to your `.vimrc` to add TrueColor support.
 
 ### Contributing
 ## Formatting
