@@ -39,6 +39,7 @@
 
 #include "config.h"
 #include "settings.h"
+/* #include "terminal.h" */
 
 static void window_urgency_hint_cb(VteTerminal *vte, gpointer user_data);
 static gboolean window_focus_cb(GtkWindow *window);
@@ -403,7 +404,10 @@ signal_handler(int signal)
 static GtkWidget *
 create_vte_terminal(GtkWindow *window, gboolean keep)
 {
+	/* g_print("In create_vte_terminal\n"); */
 	GtkWidget *vte_widget = vte_terminal_new();
+	/* GtkWidget *vte_widget = */
+	/* 	GTK_WIDGET(miniterm_terminal_new(keep, NULL, window)); */
 	VteTerminal *vte = VTE_TERMINAL(vte_widget);
 	if (!keep)
 		g_signal_connect(
@@ -455,6 +459,9 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	if (icon)
 		gtk_window_set_icon(GTK_WINDOW(window), icon);
 	g_object_unref(icon);
+
+	g_print("In new window\n");
+
 	/* Create main box. */
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	gtk_container_add(GTK_CONTAINER(window), box);
@@ -468,6 +475,20 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 		GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
 	GtkWidget *widget = vte_config(vte, GTK_WINDOW(window), title);
 	gtk_box_pack_start(GTK_BOX(box), widget, TRUE, TRUE, 0);
+
+	/* /1* Create vte terminal widget *1/ */
+	/* MinitermTerminal *term = */
+	/* 	miniterm_terminal_new(keep, title, GTK_WINDOW(window)); */
+	/* VteTerminal *vte = VTE_TERMINAL(term); */
+	/* /1* Apply geometry hints to handle terminal resizing *1/ */
+	/* set_geometry_hints(vte, &geo_hints); */
+	/* gtk_window_set_geometry_hints(GTK_WINDOW(window), GTK_WIDGET(term),
+	 */
+	/* 	&geo_hints, */
+	/* 	GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
+	 */
+	/* miniterm_terminal_add_without_scrollbar(term); */
+	/* miniterm_terminal_load_settings(term); */
 	if (!vte_spawn(vte, command_line, directory, command, NULL)) {
 		gtk_window_close(GTK_WINDOW(window));
 		g_free(command);
@@ -487,6 +508,7 @@ static void
 command_line(GApplication *app, GApplicationCommandLine *command_line,
 	gpointer user_data)
 {
+	g_print("In Command line\n");
 	(void)user_data;
 	gchar **argc;
 	gint argv;
@@ -502,6 +524,7 @@ command_line(GApplication *app, GApplicationCommandLine *command_line,
 int
 main(int argc, char *argv[])
 {
+	g_print("Starting program.\n");
 	gtk_init(&argc, &argv);
 	/* Register signal handler. */
 	signal(SIGHUP, signal_handler);

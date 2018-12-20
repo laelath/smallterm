@@ -26,7 +26,7 @@ struct _MinitermTerminalPrivate {
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE(
-	MinitermTerminal, miniterm_terminal, MINITERM_TYPE_TERMINAL);
+	MinitermTerminal, miniterm_terminal, MINITERM_TYPE_TERMINAL)
 
 static void miniterm_terminal_finalize(GObject *terminal);
 static void miniterm_terminal_dispose(GObject *terminal);
@@ -79,6 +79,7 @@ miniterm_terminal_init(MinitermTerminal *terminal)
 		VTE_TERMINAL(terminal), WORD_CHARS);
 	g_signal_connect(
 		terminal, "key-press-event", G_CALLBACK(key_press_cb), NULL);
+	g_print("Ran init.\n");
 }
 
 static void
@@ -119,6 +120,7 @@ miniterm_terminal_new(bool keep, const char *title, GtkWindow *window)
 	if (!keep)
 		g_signal_connect(
 			terminal, "child-exited", G_CALLBACK(exit_cb), window);
+	g_print("Ran new.\n");
 	return terminal;
 }
 

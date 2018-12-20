@@ -31,7 +31,7 @@
 
 #define MINITERM_TYPE_TERMINAL (miniterm_terminal_get_type())
 G_DECLARE_FINAL_TYPE(
-	MinitermTerminal, miniterm_terminal, MINITERM, TERMINAL, VteTerminal);
+	MinitermTerminal, miniterm_terminal, MINITERM, TERMINAL, VteTerminal)
 
 /* The title may be NULL. */
 MinitermTerminal *miniterm_terminal_new(
