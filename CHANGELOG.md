@@ -36,10 +36,10 @@ This project adheres to Semantic Versioning
 
 ## [1.1.1] - 2017-01-25
 ### Fixed
-- Fixe error in README.
+- Fix error in README.
 
 ### Added
-- Add vim section to README
+- Add Vim section to README.
 - Add change log.
 
 ## [1.1.0] - 2017-01-25
