@@ -28,6 +28,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <vte/vte.h>
 
 #include "config.h"
