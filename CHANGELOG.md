@@ -5,6 +5,8 @@ This project adheres to Semantic Versioning
 ### Added
 - Add options to config file previously available as compile options.
 - Add ability to reload config file on the fly. Press CTRL+Shift+R.
+- Add `scrollbar-type` option that allows always, never, or automatic
+  scrollbars.
 
 ### Changed
 - Move project to CMake.
@@ -13,6 +15,9 @@ This project adheres to Semantic Versioning
 ### Fixed
 - Fix licenses.
 - Fix default window sizing when using a scrollbar.
+
+### Removed
+- Remove `use-scrollbar` option. Use `scrollbar-type` instead.
 
 ## [1.2.0] 2018-12-16
 # Added

@@ -25,6 +25,7 @@
 
 #include <gdk/gdk.h>
 #include <glib.h>
+#include <gtk/gtk.h>
 #include <stdbool.h>
 
 #define MINITERM_COLOR_COUNT 16
@@ -36,7 +37,7 @@ struct _MinitermSettings {
 	bool dynamic_window_title;
 	bool urgent_on_bell;
 	bool audible_bell;
-	bool use_scrollbar;
+	GtkPolicyType scrollbar_type;
 	int scrollback_lines;
 	/* NULL indicates no user defined font. */
 	char *font_name;

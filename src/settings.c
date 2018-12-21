@@ -23,6 +23,7 @@
 #include "settings.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "config.h"
 
@@ -32,13 +33,16 @@ static void config_file_get_bool(
 	bool *dest, GKeyFile *config_file, char *group_name, char *key);
 static void config_file_get_int(
 	int *dest, GKeyFile *config_file, char *group_name, char *key);
+/* May print an error message on invalid format. */
+static void config_file_get_scrollbar(
+	GtkPolicyType *dest, GKeyFile *config_file);
 
 void
 miniterm_settings_init(MinitermSettings *settings)
 {
 	settings->dynamic_window_title = true;
 	settings->urgent_on_bell = true;
-	settings->use_scrollbar = false;
+	settings->scrollbar_type = GTK_POLICY_NEVER;
 	settings->audible_bell = false;
 	settings->scrollback_lines = MINITERM_DEFAULT_SCROLLBACK_LINES;
 	settings->font_name = NULL;
@@ -53,8 +57,7 @@ miniterm_settings_set_from_key_file(
 		"Misc", "dynamic-window-title");
 	config_file_get_bool(&settings->urgent_on_bell, config_file, "Misc",
 		"urgent-on-bell");
-	config_file_get_bool(
-		&settings->use_scrollbar, config_file, "Misc", "use-scrollbar");
+	config_file_get_scrollbar(&settings->scrollbar_type, config_file);
 	config_file_get_int(&settings->scrollback_lines, config_file, "Misc",
 		"use-scrollbar");
 	if (settings->scrollback_lines < 0) {
@@ -144,6 +147,23 @@ config_file_get_int(
 		g_error_free(err);
 }
 
+static void
+config_file_get_scrollbar(GtkPolicyType *dest, GKeyFile *config_file)
+{
+	char *value = g_key_file_get_string(
+		config_file, "Misc", "scrollbar-type", NULL);
+	if (value != NULL) {
+		if (strcmp(value, "always") == 0)
+			*dest = GTK_POLICY_ALWAYS;
+		else if (strcmp(value, "automatic") == 0)
+			*dest = GTK_POLICY_AUTOMATIC;
+		else if (strcmp(value, "never") == 0)
+			*dest = GTK_POLICY_NEVER;
+		else
+			g_printerr("Unknown \"scrollbar-type\": %s\n", value);
+	}
+}
+
 void
 miniterm_write_default_settings(const char *config_path)
 {
@@ -160,7 +180,7 @@ miniterm_write_default_settings(const char *config_path)
 			      "#urgent-on-bell=\n"
 			      "#audible-bell=\n"
 			      "#scrollback-lines=\n"
-			      "#use-scrollbar=\n");
+			      "#scrollbar-type=\n");
 		fclose(file);
 	}
 }

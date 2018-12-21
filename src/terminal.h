@@ -35,8 +35,7 @@ G_DECLARE_FINAL_TYPE(
 
 /*
  * The title may be NULL. Don't manually add the result of this function to the
- * window. This class will take care of it. To finish initialization, call
- * miniterm_terminal_load_settings.
+ * window. This class will take care of it.
  */
 MinitermTerminal *miniterm_terminal_new(
 	bool keep, const char *title, GtkWindow *window);
