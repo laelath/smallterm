@@ -224,6 +224,7 @@ miniterm_terminal_load_settings(MinitermTerminal *terminal)
 	g_free(config_dir);
 	g_free(config_path);
 	g_key_file_free(config_file);
+	gtk_widget_grab_focus(GTK_WIDGET(terminal));
 	return true;
 }
 
