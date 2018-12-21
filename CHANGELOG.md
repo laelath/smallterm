@@ -11,7 +11,8 @@ This project adheres to Semantic Versioning
 - Make icon show a terminal rather than generic picture.
 
 ### Fixed
-- Fixed licenses.
+- Fix licenses.
+- Fix default window sizing when using a scrollbar.
 
 ## [1.2.0] 2018-12-16
 # Added

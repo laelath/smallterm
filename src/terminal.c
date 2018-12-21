@@ -397,6 +397,13 @@ make_scrolled_window(GtkScrollable *widget)
 		GTK_SCROLLED_WINDOW(scrolled_window), FALSE);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	/*
+	 * Make the scrolled window use the same width and height as its child.
+	 */
+	gtk_scrolled_window_set_propagate_natural_width(
+		GTK_SCROLLED_WINDOW(scrolled_window), TRUE);
+	gtk_scrolled_window_set_propagate_natural_height(
+		GTK_SCROLLED_WINDOW(scrolled_window), TRUE);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(widget));
 	return scrolled_window;
 }
