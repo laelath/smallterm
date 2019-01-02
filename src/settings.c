@@ -59,7 +59,7 @@ miniterm_settings_set_from_key_file(
 		"urgent-on-bell");
 	config_file_get_scrollbar(&settings->scrollbar_type, config_file);
 	config_file_get_int(&settings->scrollback_lines, config_file, "Misc",
-		"use-scrollbar");
+		"scrollback-lines");
 	if (settings->scrollback_lines < 0) {
 		fprintf(stderr, "Invalid scrollback lines: %i\n",
 			settings->scrollback_lines);
