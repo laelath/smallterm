@@ -1,7 +1,12 @@
 # Change Log
 This project adheres to Semantic Versioning
 
-### Unreleased
+## Unreleased
+### Fixed
+- Fix documentation.
+- Fix `scrollback-lines` setting.
+
+## [1.4.0] - 2019-01-01
 ### Added
 - Add options to config file previously available as compile options.
 - Add ability to reload config file on the fly. Press CTRL+Shift+R.
