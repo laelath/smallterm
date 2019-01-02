@@ -1,14 +1,39 @@
 # Change Log
 This project adheres to Semantic Versioning
 
-## [1.1.3]
+### Unreleased
+### Added
+- Add options to config file previously available as compile options.
+- Add ability to reload config file on the fly. Press CTRL+Shift+R.
+- Add `scrollbar-type` option that allows always, never, or automatic
+  scrollbars.
+
+### Changed
+- Move project to CMake.
+- Make icon show a terminal rather than generic picture.
+
+### Fixed
+- Fix licenses.
+- Fix default window sizing when using a scrollbar.
+
+### Removed
+- Remove `use-scrollbar` option. Use `scrollbar-type` instead.
+
+## [1.2.0] 2018-12-16
+# Added
+- Add a scroll bar.
+
+### Fixed
+- Fix README
+
+## [1.1.3] - 2018-02-24
 ### Fixed
 - No longer builds in debug mode by default.
 
 ### Changed
 - Internal changes.
 
-## [1.1.2]
+## [1.1.2] - 2018-01-29
 ### Fixed
 - Fixed errors parsing command line arguments crashing all terminals
 - Fixed opening help and version closing all terminals
@@ -16,10 +41,10 @@ This project adheres to Semantic Versioning
 
 ## [1.1.1] - 2017-01-25
 ### Fixed
-- Fixe error in README.
+- Fix error in README.
 
 ### Added
-- Add vim section to README
+- Add Vim section to README.
 - Add change log.
 
 ## [1.1.0] - 2017-01-25
