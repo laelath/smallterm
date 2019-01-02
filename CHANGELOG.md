@@ -1,7 +1,7 @@
 # Change Log
 This project adheres to Semantic Versioning
 
-## Unreleased
+## [1.4.1] - 2019-01-01
 ### Fixed
 - Fix documentation.
 - Fix `scrollback-lines` setting.
