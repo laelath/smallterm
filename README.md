@@ -75,18 +75,22 @@ following options:
 	color0f=#3d36e3
 
 ### Scrollbar
-For a scrollbar, set the `use-scrollbar` setting in the `[Misc]` section to `true`.
+For a scrollbar, set the `scrollbar-type` setting to either `automatic` or
+`always`. To disable the scrollbar set it to `never`.
 
 ### Other
-If the configuration file doesn't exist, Miniterm will create one automatically. See the generated
-XDG\_CONFIG\_HOME/miniterm/miniterm.conf for all available options.
+If the configuration file doesn't exist, Miniterm will create one automatically.
+See the generated XDG\_CONFIG\_HOME/miniterm/miniterm.conf for all available
+options.
 
 ## Miscellaneous
 ### Weird Colors in Vim
-Sometimes Vim doesn't color every line correctly. To fix this, add `set t_ut=` in your `.vimrc`. In
-addition to that, add `set termguicolors` to your `.vimrc` to add TrueColor support.
+Sometimes Vim doesn't color every line correctly. To fix this, add `set t_ut=`
+in your `.vimrc`. In addition to that, add `set termguicolors` to your `.vimrc`
+to add TrueColor support.
 
 ### Contributing
 ## Formatting
-This project is formatted using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Please
-run this command on your code before committing.
+This project is formatted using
+[clang-format](https://clang.llvm.org/docs/ClangFormat.html). Please run this
+command on your code before committing.
