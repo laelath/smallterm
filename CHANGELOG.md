@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## Unreleased
+### Fixed
+- Fix CMake so miniterm builds on FreeBSD.
+
 ## [1.4.1] - 2019-01-01
 ### Fixed
 - Fix documentation.
