@@ -26,7 +26,7 @@
  *
  */
 
-#define MINITERM_VERSION "1.4.1"
+#define MINITERM_VERSION "1.4.2"
 
 /* Terminal emulation (value of $TERM) (default: xterm) */
 #define TERMINFO "xterm-256color"
