@@ -26,6 +26,7 @@
  */
 
 #include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -216,9 +217,10 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
 	GdkPixbuf *icon =
 		gtk_icon_theme_load_icon(icon_theme, "terminal", 48, 0, NULL);
-	if (icon)
+	if (icon) {
 		gtk_window_set_icon(GTK_WINDOW(window), icon);
-	g_object_unref(icon);
+		g_object_unref(icon);
+	}
 
 	/* Create terminal widget */
 	MinitermTerminal *term =
@@ -232,6 +234,22 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 		GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
 
 	miniterm_terminal_load_settings(term);
+
+	/* Show widgets and run main loop. */
+	gtk_widget_show_all(window);
+
+	/* Set the OS window id environment variable */
+#ifdef GDK_WINDOWING_X11
+	GdkWindow *gdk_win = gtk_widget_get_parent_window(GTK_WIDGET(term));
+	if (GDK_IS_X11_DISPLAY(gdk_window_get_display(gdk_win))) {
+		XID wid = GDK_WINDOW_XID(gdk_win);
+
+		char wid_str[64];
+		snprintf(wid_str, 64, "%lu", wid);
+		setenv("WINDOWID", wid_str, TRUE);
+	}
+#endif
+
 	if (!vte_spawn(vte, command_line, directory, command, NULL)) {
 		gtk_window_close(GTK_WINDOW(window));
 		g_free(command);
@@ -243,8 +261,6 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	g_free(command);
 	g_free(directory);
 	g_free(title);
-	/* Show widgets and run main loop. */
-	gtk_widget_show_all(window);
 }
 
 static void
@@ -273,7 +289,6 @@ main(int argc, char *argv[])
 	signal(SIGTERM, signal_handler);
 	GtkApplication *app = gtk_application_new(
 		"us.laelath.miniterm", G_APPLICATION_HANDLES_COMMAND_LINE);
-	_application = G_APPLICATION(app);
 	g_signal_connect(app, "command-line", G_CALLBACK(command_line), NULL);
 	int status = g_application_run(G_APPLICATION(app), argc, argv);
 	g_object_unref(app);
