@@ -26,11 +26,14 @@
  */
 
 #include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <vte/vte.h>
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
 
 #include "config.h"
 #include "terminal.h"
