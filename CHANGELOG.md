@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## [1.5.1] - 2019-02-25
+### Fixed
+- Now get the X11 window id of the correct window.
+
 ## [1.5.0] - 2019-02-25
 ### Added
 - Miniterm now sets the WINDOWID environment variable in X11.
