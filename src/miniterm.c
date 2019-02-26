@@ -243,10 +243,8 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 
 	/* Set the OS window id environment variable */
 #ifdef GDK_WINDOWING_X11
-	GdkWindow *gdk_win = gtk_widget_get_parent_window(GTK_WIDGET(term));
-	if (GDK_IS_X11_DISPLAY(gdk_window_get_display(gdk_win))) {
-		XID wid = GDK_WINDOW_XID(gdk_win);
-
+	if (GDK_IS_X11_DISPLAY(gtk_widget_get_display(window))) {
+		XID wid = GDK_WINDOW_XID(gtk_widget_get_window(window));
 		char wid_str[64];
 		snprintf(wid_str, 64, "%lu", wid);
 		setenv("WINDOWID", wid_str, TRUE);
