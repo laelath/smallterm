@@ -1,6 +1,13 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## [1.5.0] - 2019-02-25
+### Added
+- Miniterm now sets the WINDOWID environment variable in X11.
+
+### Fixed
+- Fixed an improper `g_object_unref`
+
 ## [1.4.2] - 2019-01-04
 ### Fixed
 - Fix CMake so miniterm builds on FreeBSD.
