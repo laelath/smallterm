@@ -215,7 +215,7 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	/* Create window. */
 	GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
 	g_signal_connect(window, "delete-event", G_CALLBACK(window_close), app);
-	gtk_window_set_title(GTK_WINDOW(window), title ? title : "MiniTerm");
+	gtk_window_set_title(GTK_WINDOW(window), title ? title : "miniterm");
 	/* Set window icon supplied by an icon theme. */
 	GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
 	GdkPixbuf *icon =
