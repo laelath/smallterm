@@ -1,6 +1,13 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## [1.6.0] - 2019-03-29
+### Added
+- New instances now start in the directory they were called in.
+
+### Changed
+- Changed default window title from `MiniTerm` to `miniterm`.
+
 ## [1.5.1] - 2019-02-25
 ### Fixed
 - Now get the X11 window id of the correct window.
