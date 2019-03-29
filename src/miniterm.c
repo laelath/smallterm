@@ -41,7 +41,7 @@
 static gboolean vte_spawn(VteTerminal *vte,
 	GApplicationCommandLine *command_line, char *working_directory,
 	char *command, char **environment);
-/* Callback to exit TinyTerm with exit status of child process. */
+/* Callback to exit miniterm with exit status of child process. */
 static void window_close(GtkWindow *window, gint status, gpointer user_data);
 static gboolean parse_arguments(GApplicationCommandLine *command_line, int argc,
 	char *argv[], char **command, char **directory, gboolean *keep,
@@ -211,6 +211,12 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	if (!parse_arguments(command_line, argc, argv, &command, &directory,
 		    &keep, &title)) {
 		return;
+	}
+	if (directory == NULL) {
+		directory = malloc(PATH_MAX);
+		const char *cwd =
+			g_application_command_line_get_cwd(command_line);
+		strncpy(directory, cwd, PATH_MAX);
 	}
 	/* Create window. */
 	GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
