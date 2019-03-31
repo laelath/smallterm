@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## [1.7.0] - 2019-03-30
+### Added
+- `columns` and `rows` settings that specify the default window size.
+- `autohide-mouse` setting that will hide the cursor on entering text.
+
 ## [1.6.1] - 2019-03-30
 ### Fixed
 - No longer rely on `PATH_MAX` to get cwd.
