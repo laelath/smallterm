@@ -179,6 +179,16 @@ update_from_settings(MinitermTerminal *terminal, MinitermSettings *settings)
 			priv->default_font_size = 12 * PANGO_SCALE;
 		pango_font_description_free(font);
 	}
+	if (settings->columns > 0 || settings->rows > 0) {
+		int cols = vte_terminal_get_row_count(VTE_TERMINAL(terminal));
+		int rows =
+			vte_terminal_get_column_count(VTE_TERMINAL(terminal));
+		if (settings->columns > 0)
+			cols = settings->columns;
+		if (settings->rows > 0)
+			rows = settings->rows;
+		vte_terminal_set_size(VTE_TERMINAL(terminal), cols, rows);
+	}
 	if (settings->has_colors)
 		vte_terminal_set_colors(VTE_TERMINAL(terminal),
 			&settings->fg_color, &settings->bg_color,

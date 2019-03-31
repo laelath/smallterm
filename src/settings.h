@@ -41,6 +41,10 @@ struct _MinitermSettings {
 	int scrollback_lines;
 	/* NULL indicates no user defined font. */
 	char *font_name;
+	/* Non-positive indicates no default. */
+	int columns;
+	/* Non-positive indicates no default. */
+	int rows;
 
 	/* Whether or not colors are valid. */
 	bool has_colors;
