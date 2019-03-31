@@ -46,6 +46,8 @@ miniterm_settings_init(MinitermSettings *settings)
 	settings->audible_bell = false;
 	settings->scrollback_lines = MINITERM_DEFAULT_SCROLLBACK_LINES;
 	settings->font_name = NULL;
+	settings->columns = 0;
+	settings->rows = 0;
 	settings->has_colors = false;
 }
 
@@ -60,6 +62,8 @@ miniterm_settings_set_from_key_file(
 	config_file_get_scrollbar(&settings->scrollbar_type, config_file);
 	config_file_get_int(&settings->scrollback_lines, config_file, "Misc",
 		"scrollback-lines");
+	config_file_get_int(&settings->columns, config_file, "Misc", "columns");
+	config_file_get_int(&settings->rows, config_file, "Misc", "rows");
 	if (settings->scrollback_lines < 0) {
 		fprintf(stderr, "Invalid scrollback lines: %i\n",
 			settings->scrollback_lines);
