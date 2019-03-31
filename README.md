@@ -83,6 +83,9 @@ There are several options in the `Misc` section of the configuration file.
 For a scrollbar, set the `scrollbar-type` setting to either `automatic` or
 `always` in the `Misc` section. To disable the scrollbar set it to `never`.
 
+#### Size
+The default size can be set with the `columns` and `rows` options.
+
 ### Other
 If the configuration file doesn't exist, Miniterm will create one automatically.
 See the generated `$XDG\_CONFIG\_HOME/miniterm/miniterm.conf` for all available

@@ -173,18 +173,23 @@ miniterm_write_default_settings(const char *config_path)
 {
 	FILE *file = fopen(config_path, "w");
 	if (file) {
-		fprintf(file, "[Font]\n#font=\n\n"
-			      "[Colors]\n#foreground=\n#background=\n"
-			      "#color00=\n#color01=\n#color02=\n#color03=\n"
-			      "#color04=\n#color05=\n#color06=\n#color07=\n"
-			      "#color08=\n#color09=\n#color0a=\n#color0b=\n"
-			      "#color0c=\n#color0d=\n#color0e=\n#color0f=\n\n"
-			      "[Misc]\n"
-			      "#dynamic-window-title=\n"
-			      "#urgent-on-bell=\n"
-			      "#audible-bell=\n"
-			      "#scrollback-lines=\n"
-			      "#scrollbar-type=\n");
+		fprintf(file,
+			"[Font]\n"
+			"# font=\n\n"
+			"[Colors]\n"
+			"# foreground=\n# background=\n"
+			"# color00=\n# color01=\n# color02=\n# color03=\n"
+			"# color04=\n# color05=\n# color06=\n# color07=\n"
+			"# color08=\n# color09=\n# color0a=\n# color0b=\n"
+			"# color0c=\n# color0d=\n# color0e=\n# color0f=\n\n"
+			"[Misc]\n"
+			"# dynamic-window-title=\n"
+			"# urgent-on-bell=\n"
+			"# audible-bell=\n"
+			"# scrollback-lines=\n"
+			"# scrollbar-type=\n"
+			"# columns=80\n"
+			"# rows=24\n");
 		fclose(file);
 	}
 }
