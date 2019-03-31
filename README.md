@@ -74,9 +74,14 @@ following options:
 	color0e=#93a1a1
 	color0f=#3d36e3
 
-### Scrollbar
+### Misc
+There are several options in the `Misc` section of the configuration file.
+#### Scrollbar
 For a scrollbar, set the `scrollbar-type` setting to either `automatic` or
 `always`. To disable the scrollbar set it to `never`.
+
+#### Size
+The default size can be set with the `columns` and `rows` options.
 
 ### Other
 If the configuration file doesn't exist, Miniterm will create one automatically.
