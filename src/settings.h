@@ -37,6 +37,7 @@ struct _MinitermSettings {
 	bool dynamic_window_title;
 	bool urgent_on_bell;
 	bool audible_bell;
+	bool autohide_mouse;
 	GtkPolicyType scrollbar_type;
 	int scrollback_lines;
 	/* NULL indicates no user defined font. */

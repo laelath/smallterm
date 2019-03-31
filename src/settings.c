@@ -44,6 +44,7 @@ miniterm_settings_init(MinitermSettings *settings)
 	settings->urgent_on_bell = true;
 	settings->scrollbar_type = GTK_POLICY_NEVER;
 	settings->audible_bell = false;
+	settings->autohide_mouse = false;
 	settings->scrollback_lines = MINITERM_DEFAULT_SCROLLBACK_LINES;
 	settings->font_name = NULL;
 	settings->columns = 0;
@@ -59,6 +60,8 @@ miniterm_settings_set_from_key_file(
 		"Misc", "dynamic-window-title");
 	config_file_get_bool(&settings->urgent_on_bell, config_file, "Misc",
 		"urgent-on-bell");
+	config_file_get_bool(&settings->autohide_mouse, config_file, "Misc",
+		"autohide-mouse");
 	config_file_get_scrollbar(&settings->scrollbar_type, config_file);
 	config_file_get_int(&settings->scrollback_lines, config_file, "Misc",
 		"scrollback-lines");
@@ -186,6 +189,7 @@ miniterm_write_default_settings(const char *config_path)
 			"# dynamic-window-title=\n"
 			"# urgent-on-bell=\n"
 			"# audible-bell=\n"
+			"# autohide-mouse=\n"
 			"# scrollback-lines=\n"
 			"# scrollbar-type=\n"
 			"# columns=80\n"

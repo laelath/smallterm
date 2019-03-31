@@ -157,6 +157,8 @@ update_from_settings(MinitermTerminal *terminal, MinitermSettings *settings)
 		VTE_TERMINAL(terminal), settings->audible_bell);
 	vte_terminal_set_scrollback_lines(
 		VTE_TERMINAL(terminal), settings->scrollback_lines);
+	vte_terminal_set_mouse_autohide(
+		VTE_TERMINAL(terminal), settings->autohide_mouse);
 	clear_signal_handlers(terminal);
 	if (settings->urgent_on_bell) {
 		priv->bell_handler = g_signal_connect(terminal, "bell",
