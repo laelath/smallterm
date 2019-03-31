@@ -213,10 +213,12 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 		return;
 	}
 	if (directory == NULL) {
-		directory = malloc(PATH_MAX);
 		const char *cwd =
 			g_application_command_line_get_cwd(command_line);
-		strncpy(directory, cwd, PATH_MAX);
+		if (cwd != NULL) {
+			directory = malloc(strlen(cwd) + 1);
+			strcpy(directory, cwd);
+		}
 	}
 	/* Create window. */
 	GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
