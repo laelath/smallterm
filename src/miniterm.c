@@ -39,7 +39,7 @@
 #include "terminal.h"
 
 static gboolean vte_spawn(VteTerminal *vte,
-	GApplicationCommandLine *command_line, char *working_directory,
+	GApplicationCommandLine *command_line, const char *working_directory,
 	char *command, char **environment);
 /* Callback to exit miniterm with exit status of child process. */
 static void window_close(GtkWindow *window, gint status, gpointer user_data);
@@ -58,7 +58,7 @@ static GApplication *_application = NULL;
 
 static gboolean
 vte_spawn(VteTerminal *vte, GApplicationCommandLine *command_line,
-	char *working_directory, char *command, char **environment)
+	const char *working_directory, char *command, char **environment)
 {
 	GError *error = NULL;
 	char **command_argv = NULL;
@@ -212,14 +212,11 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 		    &keep, &title)) {
 		return;
 	}
-	if (directory == NULL) {
-		const char *cwd =
-			g_application_command_line_get_cwd(command_line);
-		if (cwd != NULL) {
-			directory = malloc(strlen(cwd) + 1);
-			strcpy(directory, cwd);
-		}
-	}
+	const char *cwd =
+		directory == NULL
+			? g_application_command_line_get_cwd(command_line)
+			: directory;
+
 	/* Create window. */
 	GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
 	g_signal_connect(window, "delete-event", G_CALLBACK(window_close), app);
@@ -259,7 +256,7 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 	}
 #endif
 
-	if (!vte_spawn(vte, command_line, directory, command, NULL)) {
+	if (!vte_spawn(vte, command_line, cwd, command, NULL)) {
 		gtk_window_close(GTK_WINDOW(window));
 		g_free(command);
 		g_free(directory);
