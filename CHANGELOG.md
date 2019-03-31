@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## [1.6.1] - 2019-03-30
+### Fixed
+- No longer rely on `PATH_MAX` to get cwd.
+
 ## [1.6.0] - 2019-03-29
 ### Added
 - New instances now start in the directory they were called in.
