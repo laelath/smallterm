@@ -58,7 +58,7 @@ these to the hexadecimal colors for your color scheme. For solarized, use the
 following options:
 
 	[Colors]
-	foreground=#657B83
+	foreground=#839496
 	background=#002B36
 	color00=#073642
 	color01=#DC322F
