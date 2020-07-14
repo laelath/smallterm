@@ -96,7 +96,7 @@ vte_spawn(VteTerminal *vte, GApplicationCommandLine *command_line,
 			vte_pty_child_setup, // an extra child setup function to
 					     // run in the child just before
 					     // exec()
-		pty,	// user data for child_setup
+		pty,	    // user data for child_setup
 		&child_pid, // a location to store the child PID
 		&error);    // return location for a GError
 	if (error) {
@@ -219,6 +219,13 @@ new_window(GtkApplication *app, GApplicationCommandLine *command_line,
 
 	/* Create window. */
 	GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
+
+	/* Try to set the rgba colormap so vte can use real transparency. */
+	GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(window));
+	GdkVisual *visual = gdk_screen_get_rgba_visual(screen);
+	if (visual != NULL)
+		gtk_widget_set_visual(GTK_WIDGET(window), visual);
+
 	g_signal_connect(window, "delete-event", G_CALLBACK(window_close), app);
 	gtk_window_set_title(GTK_WINDOW(window), title ? title : "miniterm");
 	/* Set window icon supplied by an icon theme. */

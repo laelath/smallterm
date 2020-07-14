@@ -1,6 +1,14 @@
 # Change Log
 This project adheres to Semantic Versioning
 
+## Unreleased
+### Added
+- Add transparency. In the "Colors" section of the configuration file, you can
+  set the transparency variable to a number from 0.0 to 1.0.
+
+### Fixed
+- Fix incorrect Solarized foreground color in documentation.
+
 ## [1.7.0] - 2019-03-30
 ### Added
 - `columns` and `rows` settings that specify the default window size.

@@ -77,6 +77,10 @@ following options:
 	color0e=#93a1a1
 	color0f=#3d36e3
 
+You can enable a transparent terminal with the `transparency` option. This
+setting should be a number between 0 and 1. A value of 0 indicates complete
+transparency and 1 indicates no transparency. The default is no transparency.
+
 ### Misc
 There are several options in the `Misc` section of the configuration file.
 #### Scrollbar
