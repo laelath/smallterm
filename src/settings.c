@@ -22,6 +22,7 @@
 
 #include "settings.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -127,6 +128,30 @@ miniterm_settings_set_colors(MinitermSettings *settings, GKeyFile *config_file)
 	}
 	g_free(fg_string);
 	g_free(bg_string);
+
+	/* Use transparency setting if available. */
+	GError *err = NULL;
+	gdouble transparency = g_key_file_get_double(
+		config_file, "Colors", "transparency", &err);
+
+	/* Default to no transparency. */
+	settings->bg_color.alpha = 1.0;
+	if (err != NULL) {
+		bool is_missing_key = g_error_matches(
+			err, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+		g_error_free(err);
+		if (!is_missing_key)
+			return;
+	} else if (transparency < 0.0 || transparency > 1.0) {
+		fprintf(stderr,
+			"Invalid transparency, must be between 0 and 1: %f\n",
+			transparency);
+
+		return;
+	} else {
+		settings->bg_color.alpha = transparency;
+	}
+
 	settings->has_colors = true;
 }
 
@@ -175,25 +200,26 @@ void
 miniterm_write_default_settings(const char *config_path)
 {
 	FILE *file = fopen(config_path, "w");
-	if (file) {
-		fprintf(file,
-			"[Font]\n"
-			"# font=\n\n"
-			"[Colors]\n"
-			"# foreground=\n# background=\n"
-			"# color00=\n# color01=\n# color02=\n# color03=\n"
-			"# color04=\n# color05=\n# color06=\n# color07=\n"
-			"# color08=\n# color09=\n# color0a=\n# color0b=\n"
-			"# color0c=\n# color0d=\n# color0e=\n# color0f=\n\n"
-			"[Misc]\n"
-			"# dynamic-window-title=\n"
-			"# urgent-on-bell=\n"
-			"# audible-bell=\n"
-			"# autohide-mouse=\n"
-			"# scrollback-lines=\n"
-			"# scrollbar-type=\n"
-			"# columns=80\n"
-			"# rows=24\n");
-		fclose(file);
-	}
+	if (file == NULL)
+		return;
+
+	fprintf(file, "[Font]\n"
+		      "# font=\n\n"
+		      "[Colors]\n"
+		      "# foreground=\n# background=\n"
+		      "# color00=\n# color01=\n# color02=\n# color03=\n"
+		      "# color04=\n# color05=\n# color06=\n# color07=\n"
+		      "# color08=\n# color09=\n# color0a=\n# color0b=\n"
+		      "# color0c=\n# color0d=\n# color0e=\n# color0f=\n"
+		      "# transparency=1.0\n\n"
+		      "[Misc]\n"
+		      "# dynamic-window-title=\n"
+		      "# urgent-on-bell=\n"
+		      "# audible-bell=\n"
+		      "# autohide-mouse=\n"
+		      "# scrollback-lines=\n"
+		      "# scrollbar-type=\n"
+		      "# columns=80\n"
+		      "# rows=24\n");
+	fclose(file);
 }
