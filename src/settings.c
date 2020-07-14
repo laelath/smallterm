@@ -146,7 +146,6 @@ miniterm_settings_set_colors(MinitermSettings *settings, GKeyFile *config_file)
 		fprintf(stderr,
 			"Invalid transparency, must be between 0 and 1: %f\n",
 			transparency);
-
 		return;
 	} else {
 		settings->bg_color.alpha = transparency;
