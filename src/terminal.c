@@ -270,6 +270,7 @@ key_press_cb(MinitermTerminal *terminal, GdkEventKey *event)
 			vte_terminal_paste_clipboard(vte);
 			return TRUE;
 		case GDK_KEY_plus:
+		case GDK_KEY_KP_Add:
 			increase_font_size(terminal);
 			return TRUE;
 		case GDK_KEY_r:
@@ -279,6 +280,7 @@ key_press_cb(MinitermTerminal *terminal, GdkEventKey *event)
 	} else if (modifiers == GDK_CONTROL_MASK) {
 		switch (key) {
 		case GDK_KEY_minus:
+		case GDK_KEY_KP_Subtract:
 			decrease_font_size(terminal);
 			return TRUE;
 		case GDK_KEY_equal:
